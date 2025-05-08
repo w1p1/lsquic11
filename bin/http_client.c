@@ -57,7 +57,9 @@
 #include "lsxpack_header.h"
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
-
+#define LSQ_LOG_TIMESTAMP 1
+#define LSQ_LOG_TIMESTAMPS_ABS 2
+//修改位置1
 /* This is used to exercise generating and sending of priority frames */
 static int randomly_reprioritize_streams;
 
@@ -1599,6 +1601,17 @@ const struct lsquic_stream_if qif_client_if = {
 int
 main (int argc, char **argv)
 {
+    //修改位置2
+    FILE *log_file = fopen("/mnt/c/Users/21453/boringssl/lsquic/test/logg/client.log", "a");
+    if (!log_file) {
+        perror("Failed to open client.log");
+        return 1;
+    }
+
+    lsquic_log_to_fstream(log_file, LSQ_LOG_TIMESTAMP | LSQ_LOG_TIMESTAMPS_ABS);
+
+    fflush(log_file);
+    lsquic_logger_lopt("engine=info,event=info,conn=info");
     int opt, s, was_empty;
     lsquic_time_t start_time;
     FILE *stats_fh = NULL;
@@ -1892,5 +1905,7 @@ main (int argc, char **argv)
         (void) fclose(client_ctx.qif_fh);
 
     free(priority_specs);
+    //修改位置3
+    fclose(log_file);
     exit(0 == s ? EXIT_SUCCESS : EXIT_FAILURE);
 }
