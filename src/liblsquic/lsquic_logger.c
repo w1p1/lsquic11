@@ -52,7 +52,7 @@ static const struct lsquic_logger_if null_logger_if = {
 };
 
 static void *logger_ctx = NULL;
-static const struct lsquic_logger_if *logger_if = &null_logger_if;
+static const struct lsquic_logger_if *logger_if = &file_logger_if;
 
 enum lsq_log_level lsq_log_levels[N_LSQUIC_LOGGER_MODULES] = {
     [LSQLM_NOMODULE]    = LSQ_LOG_WARN,
